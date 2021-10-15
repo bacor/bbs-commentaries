@@ -263,11 +263,14 @@ export default function App() {
       <div class="header">
         <h1>Social bonding or credible signaling?</h1>
         <p className="intro">
-            An upcoming issue of { }
-            <a href="https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/volume/754CEA3F64D634A7B205A922E359BA7C" target="_blank">Behavioral and Brain Sciences</a>{ }
-            contains two target articles discussing the origins of musicality.{ } 
-            <a href="https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/origins-of-music-in-credible-signaling/82D36C04DA04D96AD9A77EEAF4BBFB34" target="_blank">Sam Mehr and colleagues</a> argue that musicality originates in credible signaling, while <a href="https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/music-as-a-coevolved-system-for-social-bonding/F1ACB3586FD3DD5965E56021F506BC4F" target="_blank">Pat
-            Savage and colleagues</a> instead point to social bonding.
+            An upcoming issue of {" "}
+            <a href="https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/volume/754CEA3F64D634A7B205A922E359BA7C" target="_blank">
+              Behavioral and Brain Sciences
+            </a>{" "}
+            contains two target articles discussing the origins of musicality.{" "}
+            <a href="https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/origins-of-music-in-credible-signaling/82D36C04DA04D96AD9A77EEAF4BBFB34" target="_blank">Sam Mehr and colleagues</a> argue that musicality originates in credible signaling, while <a href="https://www.cambridge.org/core/journals/behavioral-and-brain-sciences/article/music-as-a-coevolved-system-for-social-bonding/F1ACB3586FD3DD5965E56021F506BC4F" target="_blank">
+              Pat Savage and colleagues
+            </a> instead point to social bonding.
           </p>
           <p className="intro">
             <strong>We asked the many commentators where they would position themselves in this debate. Click on the points below to find out!</strong>
