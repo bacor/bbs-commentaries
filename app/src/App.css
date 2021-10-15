@@ -1,0 +1,61 @@
+.App {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+.graph, .header, .papers, .credits {
+  margin: auto;
+  max-width: 700px;;
+}
+
+.header {
+  padding-top: 1rem;
+  max-width: 600px;
+}
+
+.credits {
+  padding: 1rem;
+  color: #666;
+}
+
+circle {
+  transition: stroke-width 200ms ease;
+  stroke: #ccc;
+  stroke-width: 0;
+}
+
+circle.hover {
+  stroke-width: 3;
+}
+
+circle.active {
+  stroke-width: 8;
+}
+
+.papers {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem;
+  justify-content: space-evenly;
+}
+
+.paper {
+  display: inline-block;
+  /* flex-basis: 25%; */
+  text-align: start;
+  padding: .5rem 2rem;
+  margin: 1rem;
+  min-width: 100px;
+  max-width: 250px;
+  border-radius: .5em;
+  background-color: #fff;
+  box-shadow: 0 0 1rem rgba(0,0,0,0.05);
+}
+
+.authors {
+  color: #000;
+}
+
+.paper.hidden{ 
+  display: none;
+}
