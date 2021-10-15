@@ -194,10 +194,10 @@ async function createGraph({ onPointClick }) {
     .attr('text-anchor', 'middle')
     .text('Credible signaling')
 
-  drawTickLabel(gridLayer, 'stronly', 'critical', -2, -2.5, -2, -2.7, 'middle')
-  drawTickLabel(gridLayer, 'stronly', 'supportive', 2, -2.5, 2, -2.7, 'middle')
-  drawTickLabel(gridLayer, 'stronly', 'supportive', -2.5, 2.1, -2.5, 1.9, 'end')
-  drawTickLabel(gridLayer, 'stronly', 'critical', -2.5, -1.9, -2.5, -2.1, 'end')
+  drawTickLabel(gridLayer, 'strongly', 'critical', -2, -2.5, -2, -2.7, 'middle')
+  drawTickLabel(gridLayer, 'strongly', 'supportive', 2, -2.5, 2, -2.7, 'middle')
+  drawTickLabel(gridLayer, 'strongly', 'supportive', -2.5, 2.1, -2.5, 1.9, 'end')
+  drawTickLabel(gridLayer, 'strongly', 'critical', -2.5, -1.9, -2.5, -2.1, 'end')
 
 
   // const details = d3.select(".App .graph").data(countData).enter()
