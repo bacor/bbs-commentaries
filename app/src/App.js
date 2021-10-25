@@ -1,7 +1,7 @@
 import './App.css';
 import * as d3 from 'd3' // Import D3
-import React, { useEffect, useState, useRef } from 'react'
-import rawData from './data/clean-responses.csv'
+import React, { useEffect, useState } from 'react'
+import rawData from './data/responses.csv'
 import metadata from './data/metadata.json'
 
 const getData = async () => {
@@ -39,25 +39,41 @@ const getCountData = data => {
   return Object.values(groups)
 }
 
+/**
+ * The dot product of two lists.
+ * @param {list} a The first array
+ * @param {list} b The second
+ * @returns The dot-product of a and b
+ */
+const dot = (a, b) => (
+  a.map((x, i) => a[i] * b[i]).reduce((m, n) => m + n));
+
+/**
+ * Get the color corresponding to a particular point in the grid.
+ * @param {int} x Horizontal coordinate
+ * @param {int} y Vertical coordinate
+ * @returns a color
+ */
+const getColor = (x, y) => {
+  const colorDiag = [1 / Math.sqrt(2), -1 / Math.sqrt(2)];
+  const vmin = dot(colorDiag, [-2, 2])
+  const vmax = dot(colorDiag, [2, -2]) + 1.5
+  const colorScale = d3.scaleSequential()
+    .domain([vmin, vmax])
+    .interpolator(d3.interpolatePlasma);
+  const projection = dot([x, y], colorDiag)
+  return colorScale(projection)
+  }
+
 async function createGraph({ onPointClick }) {
+  // Load data
+  const data = await getData()
+  const countData = getCountData(data);
+
   const 
     margin = { top: 20, right: 20, bottom: 20, left: 20 },
     width = 600 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
-
-  const svg = d3.select(".App .graph").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", `translate(${margin.left}, ${margin.top})`);
-    // .attr("transform", 
-    //   `translate(${margin.left}, ${margin.top}) \
-    //   rotate(45 ${width/2 + margin.left} ${height/2  + margin.bottom})`)
-  
-  const gridLayer = svg.append('g').attr('class', 'grid layer');
-  const dataLayer = svg.append('g').attr('class', 'data layer');
-  const circles = dataLayer.append('g').attr('class', 'circles');
-  const annotations = dataLayer.append('g').attr('class', 'annotations');
 
   const xScale = d3.scaleLinear()
     .domain([-3, 3])
@@ -65,71 +81,57 @@ async function createGraph({ onPointClick }) {
   const yScale = d3.scaleLinear()
     .domain([-3, 3])
     .range([height, 0]);
-  const factor = 30
+  const factor = 28
   const rScale = d3.scaleLinear()
     .domain([0, 6])
     .range([3, factor * Math.sqrt(6/Math.PI)]);
-  const cScale = d3.scaleSequential()
-    .domain([-2, 3])
-    .interpolator(d3.interpolatePlasma);
 
-  const dot = (a, b) => (
-    a.map((x, i) => a[i] * b[i]).reduce((m, n) => m + n));
+  
 
-  const getColor = (x, y) => {
-    const colorDiag = [1 / Math.sqrt(2), -1 / Math.sqrt(2)];
-    // const satDiag = [1 / Math.sqrt(2), 1 / Math.sqrt(2)];
-    const vmin = dot(colorDiag, [-2, 2])
-    const vmax = dot(colorDiag, [2, -2]) + 1.5
-    const colorScale = d3.scaleSequential()
-      .domain([vmin, vmax])
-      .interpolator(d3.interpolatePlasma);
-    const projection = dot([x, y], colorDiag)
-    return colorScale(projection)
+  const svg = d3.select(".App .graph").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+  const gridLayer = svg.append('g').attr('class', 'grid layer');
+  const dataLayer = svg.append('g').attr('class', 'data layer');
+  
+  const handleCircleClick = (e) => {
+    // todo: ignore count 0 ones
+    const group = e.target.parentNode
+    console.log(group)
+    dataLayer.selectAll('.point').classed('active', false)
+    group.classList.add('active')
+    const dois = group.getAttribute('data-dois').split(',')
+    const color = group.getAttribute('data-color')
+    onPointClick(dois, color)
   }
 
-  const data = await getData()
-  const countData = getCountData(data);
-  
-  circles.selectAll('circle').data(countData)
-    .enter()
-      .append('circle')
-      .attr('data-x', d => d.x)
-      .attr('data-y', d => d.y)
-      .attr('data-count', d => d.count)
-      .attr('data-color', d => getColor(d.x, d.y))
-      .attr('data-dois', d => d.entries.map(e => e.doi))
-      .attr('r', d => rScale(d.count))
-      .attr('cx', d => xScale(d.x))
-      .attr('cy', d => yScale(d.y))
-      .style('fill', d => getColor(d.x, d.y))
-      .on('mouseover', e => {
-        e.target.classList.add('hover')
-      })
-      .on('mouseout', e => {
-        e.target.classList.remove('hover')
-      })
-      .on('click', e => {
-        // todo: ignore count 0 ones
-        circles.selectAll('circle').classed('active', false)
-        e.target.classList.add('active')
+  const points = dataLayer.selectAll('g.point').data(countData)
+  const pointsEnter = points.enter().append('g')
+ 
+  pointsEnter.classed('point', true)
+    .attr('data-color', d => getColor(d.x, d.y))
+    .attr('data-dois', d => d.entries.map(e => e.doi))
 
-        const dois = e.target.getAttribute('data-dois').split(',')
-        const color = e.target.getAttribute('data-color')
-        onPointClick(dois, color)
-      })
+  pointsEnter.append('circle')
+    .attr('data-count', d => d.count)
+    .attr('data-color', d => getColor(d.x, d.y))
+    .attr('r', d => rScale(d.count))
+    .attr('cx', d => xScale(d.x))
+    .attr('cy', d => yScale(d.y))
+    .style('fill', d => getColor(d.x, d.y))
+    .on('click', handleCircleClick)
 
-  const fontSize = 11
-  annotations.selectAll('text').data(countData.filter(d => d.count > 0))
-    .enter()
-      .append('text')
-      .attr('text-anchor', 'middle')
-      .attr('x', d => xScale(d.x))
-      .attr('y', d => yScale(d.y) + 0.3 * fontSize)
-      .text(d => `${d.count}`)
-      .style('fill', '#fff')
-      .attr('font-size', fontSize);
-  
+  const fontSize = 10;
+  pointsEnter.append('text')
+    .attr('x', d => xScale(d.x))
+    .attr('y', d => yScale(d.y) + 0.3 * fontSize)
+    .text(d => d.count > 0 ? `${d.count}` : '')
+    .attr('font-size', fontSize)
+    .on('click', handleCircleClick)
+
+  pointsEnter.exit().remove();
 
   // Draw grid
   const gridPad = 0.3
@@ -154,7 +156,6 @@ async function createGraph({ onPointClick }) {
   
   gridLayer.selectAll('.gridline')
     .style("stroke", "#eee");
-
 
   const drawTickLabel = (parent, line1, line2, x1, y1, x2, y2, align) => {
     const tick = parent.append('g').attr('class', 'tick-label')
@@ -198,12 +199,6 @@ async function createGraph({ onPointClick }) {
   drawTickLabel(gridLayer, 'strongly', 'supportive', 2, -2.5, 2, -2.7, 'middle')
   drawTickLabel(gridLayer, 'strongly', 'supportive', -2.5, 2.1, -2.5, 1.9, 'end')
   drawTickLabel(gridLayer, 'strongly', 'critical', -2.5, -1.9, -2.5, -2.1, 'end')
-
-
-  // const details = d3.select(".App .graph").data(countData).enter()
-  //   .append("p")
-  //     .text(d => d.count)
-  //     .append('')
 }
 
 function Author({ data, num, num_authors }) {
@@ -240,8 +235,6 @@ function Paper({ data, visible, color }) {
   )
 }
 
-
-
 export default function App() {
   // https://medium.com/@stopyransky/react-hooks-and-d3-39be1d900fb
 
@@ -254,7 +247,6 @@ export default function App() {
       setActiveColor(color);
     } });
   }, [])
-
 
   const dois = Object.keys(metadata)
 
@@ -286,6 +278,7 @@ export default function App() {
       </div>
       <div className="credits">
         <p>A project by Henkjan Honing and Bas Cornelissen</p>
+        <p>Data and code available on <a href="https://github.com/bacor/bbs-commentaries" target="_blank">GitHub</a></p>
       </div>
     </div>
   );
