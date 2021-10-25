@@ -1,21 +1,21 @@
 {
   "files": {
     "main.css": "/bbs-commentaries/static/css/main.1063c716.chunk.css",
-    "main.js": "/bbs-commentaries/static/js/main.27cf42a9.chunk.js",
-    "main.js.map": "/bbs-commentaries/static/js/main.27cf42a9.chunk.js.map",
+    "main.js": "/bbs-commentaries/static/js/main.7cd99e8c.chunk.js",
+    "main.js.map": "/bbs-commentaries/static/js/main.7cd99e8c.chunk.js.map",
     "runtime-main.js": "/bbs-commentaries/static/js/runtime-main.bcce7522.js",
     "runtime-main.js.map": "/bbs-commentaries/static/js/runtime-main.bcce7522.js.map",
-    "static/js/2.d4eef9b4.chunk.js": "/bbs-commentaries/static/js/2.d4eef9b4.chunk.js",
-    "static/js/2.d4eef9b4.chunk.js.map": "/bbs-commentaries/static/js/2.d4eef9b4.chunk.js.map",
+    "static/js/2.b4e36832.chunk.js": "/bbs-commentaries/static/js/2.b4e36832.chunk.js",
+    "static/js/2.b4e36832.chunk.js.map": "/bbs-commentaries/static/js/2.b4e36832.chunk.js.map",
     "index.html": "/bbs-commentaries/index.html",
     "static/css/main.1063c716.chunk.css.map": "/bbs-commentaries/static/css/main.1063c716.chunk.css.map",
-    "static/js/2.d4eef9b4.chunk.js.LICENSE.txt": "/bbs-commentaries/static/js/2.d4eef9b4.chunk.js.LICENSE.txt",
-    "static/media/responses.6391b1fd.csv": "/bbs-commentaries/static/media/responses.6391b1fd.csv"
+    "static/js/2.b4e36832.chunk.js.LICENSE.txt": "/bbs-commentaries/static/js/2.b4e36832.chunk.js.LICENSE.txt",
+    "static/media/responses.8ea022df.csv": "/bbs-commentaries/static/media/responses.8ea022df.csv"
   },
   "entrypoints": [
     "static/js/runtime-main.bcce7522.js",
-    "static/js/2.d4eef9b4.chunk.js",
+    "static/js/2.b4e36832.chunk.js",
     "static/css/main.1063c716.chunk.css",
-    "static/js/main.27cf42a9.chunk.js"
+    "static/js/main.7cd99e8c.chunk.js"
   ]
 }
