@@ -81,7 +81,7 @@ async function createGraph({ onPointClick }) {
   const yScale = d3.scaleLinear()
     .domain([-3, 3])
     .range([height, 0]);
-  const factor = 28
+  const factor = 26
   const rScale = d3.scaleLinear()
     .domain([0, 6])
     .range([3, factor * Math.sqrt(6/Math.PI)]);
